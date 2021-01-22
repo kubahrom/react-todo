@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import M from 'materialize-css';
+import AddNoteForm from './components/AddNoteForm';
+import Filter from './components/Filter';
+import Form from './components/Form';
+import { NoteProvider } from './components/NoteContext';
+import NoteList from './components/NoteList';
 
 function App() {
+  const [filter, setFilter] = useState('all');
+  const [openForm, setOpenForm] = useState(false);
+  useEffect(() => {
+    M.AutoInit();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <NoteProvider>
+      <div className="App">
+        <div className="container content">
+          <div className="row center-align">
+            <h4>NOTES</h4>
+            {openForm === true ? <Form setOpenForm={setOpenForm} /> : ''}
+            <Filter setFilter={setFilter} />
+            <NoteList filter={filter} />
+          </div>
+        </div>
+        {openForm === false ? <AddNoteForm setOpenForm={setOpenForm} /> : ''}
+      </div>
+    </NoteProvider>
   );
 }
 
